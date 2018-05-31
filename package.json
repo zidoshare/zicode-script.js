@@ -1,0 +1,23 @@
+{
+  "name": "common-script",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zidoshare/common-script.js.git"
+  },
+  "keywords": [
+    "script",
+    "coder"
+  ],
+  "author": "zido",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zidoshare/common-script.js/issues"
+  },
+  "homepage": "https://github.com/zidoshare/common-script.js#readme"
+}
