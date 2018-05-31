@@ -1,5 +1,6 @@
 var readProperties = require('./readProperties')
 var parseClassName = require('./parseClassName')
+var addImport = require('./addImport')
 function readFromList(src, opt) {
   if (typeof opt == 'number') {
     opt = {
@@ -24,10 +25,6 @@ function readFromList(src, opt) {
     return
   }
   var className = parseClassName(src)
-  var returnName = 'void'
-  if (opt.returnThis) {
-    returnName = className
-  }
   var properties = readProperties(src)
   var lines = src.split('\n')
 
@@ -35,12 +32,13 @@ function readFromList(src, opt) {
 *read properties from list
 *
 * @param list the list
+* @param fields some fields
 **/
-public static ${returnName} ${opt.funcName}(List<${opt.valueType}> list,String... fields) {
+public static ${className} ${opt.funcName}(List<${opt.valueType}> list,String... fields) {
     ${className} obj = new ${className}();
     int index = 0;
     if(list.size() > fields.length){
-        return ${opt.returnThis ? obj : ''};
+        return obj;
     }
     for (String field : fields) {
         switch (field) {
@@ -64,13 +62,10 @@ public static ${returnName} ${opt.funcName}(List<${opt.valueType}> list,String..
     }
 
   }).join('\n')
-  template += '\n}\n}\n'
-  if (opt.returnThis) {
-    template += '\nreturn obj;'
-  }
+  template += '\n}\n}\nreturn obj;'
   template += '\n}'
   lines.splice(opt.line, 0, template)
-  return lines.join('\n')
+  return addImport(lines.join('\n'), 'java.util.List')
 }
 
 module.exports = readFromList

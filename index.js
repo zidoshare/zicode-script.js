@@ -20,7 +20,7 @@ program.option('-t, --to-map', 'create to map function')
 program.option('-f, --from-map', 'create from map function')
 program.option('-p, --print-properties', 'print class\'s properties string arr')
 program.option('-r, --read-from-list', 'create read from list function')
-program.arguments('<path>')
+program.arguments('[path]')
 	.action(function (path) {
 		fileName = path
 	})
