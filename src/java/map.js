@@ -14,6 +14,7 @@ function createToMapFunction(src, opt) {
   opt = {
     ...{
       funcName: 'toMap',
+      valueType: 'Object',
     },
     ...opt,
   }
@@ -24,10 +25,18 @@ function createToMapFunction(src, opt) {
   var properties = readProperties(src)
   var lines = src.split('\n')
 
-  var template = `/**\n*map ${className} \n*\n* @return new map contains not null value\n*/\npublic Map<String,Object> ${funcName}() {\n Map<String,Object> map = new HashMap<String,Object>(${properties.length});\n`
+  var template = `/**\n*map ${className} \n*\n* @return new map contains not null value\n*/\npublic Map<String,${opt.valueType}> ${funcName}() {\n Map<String,${opt.valueType}> map = new HashMap<>(${properties.length});\n`
 
   properties.forEach(prop => {
-    template += `if(this.${prop.name} != null) {\nmap.put("${prop.name}",this.${prop.name});\n}\n`
+    template += `if(this.${prop.name} != null) {\n`
+    if (opt.valueType == 'Object' || prop.type == 'String') {
+      template += `map.put("${prop.name}",this.${prop.name});\n`
+    } else if (prop.type == 'Date') {
+      template += `map.put("${prop.name}",this.${prop.name}.getTime() + "");\n`
+    } else {
+      template += `map.put("${prop.name}",this.${prop.name}.toString());\n`
+    }
+    template += `}\n`
   })
   template += 'return map;\n}'
   lines.splice(line, 0, template)
@@ -52,6 +61,7 @@ function createFromMapFunction(src, opt) {
     ...{
       funcName: 'fromMap',
       returnThis: false,
+      valueType: 'Object',
     },
     ...opt,
   }
@@ -65,10 +75,23 @@ function createFromMapFunction(src, opt) {
   if (opt.returnThis) {
     returnName = className
   }
-  var template = `/**\n*map ${className} \n*\n* @param map other map contains properties\n*/\npublic ${returnName} ${funcName}(Map<String,Object> map) {\n `
+  var template = `/**\n*map ${className} \n*\n* @param map other map contains properties\n*/\npublic ${returnName} ${funcName}(Map<String,${opt.valueType}> map) {\n `
 
   properties.forEach(prop => {
-    template += `if(map.get("${prop.name}") != null) {\nthis.${prop.name} = (${prop.type})map.get("${prop.name}");\n}\n`
+    if (opt.valueType == 'Object') {
+      template += `if(map.get("${prop.name}") != null) {\nthis.${prop.name} = (${prop.type})map.get("${prop.name}");\n}\n`
+    }
+    else {
+      template += `if(map.get("${prop.name}") != null) {\n`
+      if (prop.type == 'String') {
+        template += `this.${prop.name} = map.get("${prop.name}");\n`
+      } else if (prop.type == 'Date') {
+        template += `this.${prop.name} = new Date(Long.valueOf(map.get("${prop.name}")));\n`
+      } else if (prop.type == 'Long' || prop.type == 'Integer' || prop.type == 'Byte' || prop.type == 'Float') {
+        template += `this.${prop.name} = ${prop.type}.valueOf(map.get("${prop.name}"));\n`
+      }
+      template += `}\n`
+    }
   })
   if (opt.returnThis) {
     template += 'return this;\n'
