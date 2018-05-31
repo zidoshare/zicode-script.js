@@ -29,7 +29,7 @@ function createCopyFunction(content, opt) {
 	}
 	var lines = content.split('\n')
 
-	var template = `/**\n*copy from other ${className} *\n* @param other the other ${className}\n*/\npublic ${returnName} ${opt.funcName}(${className} other) {\n`
+	var template = `/**\n*copy from other ${className} \n*\n* @param other the other ${className}\n*/\npublic ${returnName} ${opt.funcName}(${className} other) {\n`
 	template = template + properties.map(property => {
 		return `if (other.${property.name} != null) {\nthis.${property.name} = other.${property.name};\n}`
 	}).join('\n') + '\n}'
