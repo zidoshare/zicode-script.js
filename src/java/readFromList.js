@@ -37,7 +37,7 @@ function readFromList(src, opt) {
 public static ${className} ${opt.funcName}(List<${opt.valueType}> list,String... fields) {
     ${className} obj = new ${className}();
     int index = 0;
-    if(list.size() > fields.length){
+    if(list.size() < fields.length){
         return obj;
     }
     for (String field : fields) {
