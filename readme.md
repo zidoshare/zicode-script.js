@@ -12,7 +12,7 @@
 
 ### 命令
 
-zicoder [options] <path>
+zicoder [options] [path]
 
 * path: 必须写的目标文件路径，如果是文件夹，会自动查找其中所有的java文件并执行相关操作
 
