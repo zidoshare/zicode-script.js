@@ -1,6 +1,6 @@
 {
   "name": "zicoder",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "description": "some common script for java",
   "main": "index.js",
   "repository": {
@@ -11,6 +11,9 @@
     "script",
     "coder"
   ],
+  "bin":{
+    "zicoder":"./index.js"
+  },
   "author": "zido",
   "license": "MIT",
   "bugs": {

@@ -10,7 +10,7 @@ var printProperties = require('./src').printProperties
 var path = require('path')
 var fileName, line
 
-program.version('0.0.1', '-v, --version')
+program.version('1.0.2', '-v, --version')
 program.option('-c, --copy-properties', 'Add peppers')
 program.option('--func-name [name]', 'set function name')
 program.option('--value-type [type]', 'set map value type just Object|String', function (type) {
