@@ -30,6 +30,6 @@ zicoder [options] [path]
 
 * --value-type: 设置map的value类型 `String|Object`
 
-* -l [number]：指定从哪一行写入 
+* -l [number]：指定从哪一行写入,默认会寻找类的最后一行 
 
 * -h: 获取帮助
