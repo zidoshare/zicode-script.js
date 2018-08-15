@@ -11,8 +11,8 @@
     "script",
     "coder"
   ],
-  "bin":{
-    "zicoder":"./index.js"
+  "bin": {
+    "zicoder": "./index.js"
   },
   "author": "zido",
   "license": "MIT",

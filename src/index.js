@@ -6,6 +6,15 @@ var parseClassName = require('./java/parseClassName')
 var map = require('./java/map')
 var readProperties = require('./java/readProperties')
 var readFromList = require('./java/readFromList')
+
+var typeMap = {
+  'String':'string',
+  'Integer':'int',
+  'Double':'double',
+  'Float':'float',
+  'Date':'date',
+  'Boolean':'boolean',
+}
 function createCopyFromFunction(path, opt) {
   var objs = fileHelper.readMatchPath(path, javaPattern)
   objs.forEach(obj => {
@@ -40,6 +49,16 @@ module.exports = {
     var objs = fileHelper.readMatchPath(path, javaPattern)
     objs.forEach(obj => {
       fileHelper.writeFile(obj.path, readFromList(obj.src, opt))
+    })
+  },
+  printJson:function(path,opt){
+    var objs = fileHelper.readMatchPath(path,javaPattern)
+    objs.forEach(obj => {
+      var properties = readProperties(obj.src)
+      console.log('=========',parseClassName(obj.src),'========')
+      var json = {}
+      properties.forEach(prop => json[prop.name]=(opt.toBaseLevel?(typeMap[prop.type]?typeMap[prop.type]:prop.type):prop.type))
+      console.log(JSON.stringify(json))
     })
   }
 }

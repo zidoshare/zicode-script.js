@@ -25,11 +25,11 @@ function writeFile(path, content) {
 function matchFile(path, pattern) {
   var stat = fs.statSync(path)
   if (stat.isDirectory()) {
-    if (pattern == null) {
-      return []
-    }
     var arr = fs.readdirSync(path)
-    return arr.filter(pattern.test)
+    if (pattern == null) {
+      return arr
+    }
+    return arr.filter(p => pattern.test(p))
   } else if (stat.isFile()) {
     return [path]
   }
